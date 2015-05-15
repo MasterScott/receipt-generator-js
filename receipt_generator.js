@@ -1,58 +1,103 @@
-var maxItems = 25;
+var numItems = 0;
+var shipping_handling_flag = false;
+
+function add_item() {
+	var rightSide = document.getElementById("rightSide");
+
+	var tr = document.createElement("tr");
+	var td = document.createElement("td");
+	var quantityText = document.createTextNode("Quantity:");
+	td.appendChild(quantityText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var quantityInput = document.createElement("input");
+	quantityInput.id = "quantityInput" + numItems.toString();
+	quantityInput.type = "text";
+	quantityInput.size = "4";
+	td.appendChild(quantityInput);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var partText = document.createTextNode("Part No.:");
+	td.appendChild(partText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var partInput = document.createElement("input");
+	partInput.id = "partInput" + numItems.toString();
+	partInput.type = "text";
+	partInput.size = "15";
+	td.appendChild(partInput);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var descText = document.createTextNode("Description:");
+	td.appendChild(descText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var descInput = document.createElement("input");
+	descInput.id = "descInput" + numItems.toString();
+	descInput.type = "text";
+	descInput.size = "40";
+	td.appendChild(descInput);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var priceText = document.createTextNode("Unit Price: $");
+	td.appendChild(priceText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var priceInput = document.createElement("input");
+	priceInput.id = "priceInput" + numItems.toString();
+	priceInput.type = "text";
+	priceInput.size = "4";
+	td.appendChild(priceInput);
+	tr.appendChild(td);
+	rightSide.appendChild(tr);
+
+	numItems++;
+}
+
+function add_items(n) {
+	for (var i = 0; i < n; i++) {
+		add_item();
+	}
+}
+
+function add_shipping_handling() {
+	var rightSide = document.getElementById("rightSide");
+
+	var tr = document.createElement("tr");
+	var td = document.createElement("td");
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var descText = document.createTextNode("Shipping & Handling");
+	td.appendChild(descText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var priceText = document.createTextNode("Price: $");
+	td.appendChild(priceText);
+	tr.appendChild(td);
+	var td = document.createElement("td");
+	var shPrice = document.createElement("input");
+	shPrice.id = "shPrice";
+	shPrice.type = "text";
+	shPrice.size = "4";
+	td.appendChild(shPrice);
+	tr.appendChild(td);
+	rightSide.appendChild(tr);
+
+	shipping_handling_flag = true;
+}
 
 function generate_content() {
 	document.getElementById("dateInput").value = new Date().toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" });
 	
-	var rightSide = document.getElementById("rightSide");
-
-	for (var i = 0; i < maxItems; i++) {
-		var tr = document.createElement("tr");
-		var td = document.createElement("td");
-		var quantityText = document.createTextNode("Quantity:");
-		td.appendChild(quantityText);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var quantityInput = document.createElement("input");
-		quantityInput.id = "quantityInput" + i.toString();
-		quantityInput.type = "text";
-		quantityInput.size = "4";
-		td.appendChild(quantityInput);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var partText = document.createTextNode("Part No.:");
-		td.appendChild(partText);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var partInput = document.createElement("input");
-		partInput.id = "partInput" + i.toString();
-		partInput.type = "text";
-		partInput.size = "15";
-		td.appendChild(partInput);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var descText = document.createTextNode("Description:");
-		td.appendChild(descText);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var descInput = document.createElement("input");
-		descInput.id = "descInput" + i.toString();
-		descInput.type = "text";
-		descInput.size = "40";
-		td.appendChild(descInput);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var priceText = document.createTextNode("Unit Price: $");
-		td.appendChild(priceText);
-		tr.appendChild(td);
-		var td = document.createElement("td");
-		var priceInput = document.createElement("input");
-		priceInput.id = "priceInput" + i.toString();
-		priceInput.type = "text";
-		priceInput.size = "4";
-		td.appendChild(priceInput);
-		tr.appendChild(td);
-		rightSide.appendChild(tr);
-	}
+	add_items(3);
 }
 
 function generate_document() {
@@ -134,7 +179,7 @@ function generate_document() {
 		'</tr>';
 
 	var totalPriceAll = 0;
-	for (var i = 0; i < maxItems; i++) {
+	for (var i = 0; i < numItems; i++) {
 		if (document.getElementById("quantityInput" + i.toString()).value) {
 			var quantity = document.getElementById("quantityInput" + i.toString()).value;
 			var part = document.getElementById("partInput" + i.toString()).value;
@@ -182,26 +227,35 @@ function generate_document() {
 			'<td>HST</td>' +
 			'<td>&nbsp;</td>' +
 			'<td>$' + hst.toFixed(2).toString() + '</td>' +
-			'</tr>' +
-			'<tr style="font-weight:bold; font-size:18px">' +
-			'<td>&nbsp;</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>Total</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>$' + (totalPriceAll + hst).toFixed(2).toString() + '</td>' +
 			'</tr>';
-	} else {
-		docuHTML = docuHTML +
-			'<tr style="font-weight:bold; font-size:18px">' +
-			'<td>&nbsp;</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>Total</td>' +
-			'<td>&nbsp;</td>' +
-			'<td>$' + totalPriceAll.toFixed(2).toString() + '</td>' +
-			'</tr>';
+
+		totalPriceAll += hst;
 	}
+	
+	if (shipping_handling_flag == true) {
+		var shPrice = parseInt(document.getElementById("shPrice").value);
+		docuHTML = docuHTML +
+			'<tr>' +
+			'<td>&nbsp;</td>' +
+			'<td>&nbsp;</td>' +
+			'<td>&nbsp;</td>' +
+			'<td>Shipping &amp; Handling</td>' +
+			'<td>&nbsp;</td>' +
+			'<td>$' + shPrice.toFixed(2).toString() + '</td>' +
+			'</tr>';
+
+		totalPriceAll += shPrice;
+	}
+
+	docuHTML = docuHTML +
+		'<tr style="font-weight:bold; font-size:18px">' +
+		'<td>&nbsp;</td>' +
+		'<td>&nbsp;</td>' +
+		'<td>&nbsp;</td>' +
+		'<td>Total</td>' +
+		'<td>&nbsp;</td>' +
+		'<td>$' + totalPriceAll.toFixed(2).toString() + '</td>' +
+		'</tr>';
 
 	docuHTML = docuHTML +
 		'</table>' +
