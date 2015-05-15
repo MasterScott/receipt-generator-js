@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Receipt Generator</title>
+	<script src="receipt_generator.js"></script>
+  </head>
+  <body>
+	<table>
+	  <tr>
+		<td style="vertical-align: top;">
+		  <!-- Left side -->
+		  <table>
+			<tr>
+			  <td>Type:</td>
+			  <td>
+				<select id="typeChoice">
+				  <option value="Receipt">Receipt</option>
+				  <option value="Quote">Quote</option>
+				  <option value="Invoice">Invoice</option>
+				</select>
+			  </td>
+			</tr>
+			<tr>
+			  <td>Number:</td>
+			  <td>
+				<input id="numInput" type="text" />
+			  </td>
+			</tr>
+			<tr>
+			  <td>Date:</td>
+			  <td>
+				<input id="dateInput" type="text" />
+			  </td>
+			</tr>
+			<tr>
+			  <td>Purchaser Organization:</td>
+			  <td>
+				<input id="orgInput" type="text" />
+			  </td>
+			</tr>
+			<tr>
+			  <td>Purchaser Name:</td>
+			  <td>
+				<input id="nameInput" type="text" />
+			  </td>
+			</tr>
+			<tr>
+			  <td>Purchaser Email:</td>
+			  <td>
+				<input id="emailInput" type="text" />
+			  </td>
+			</tr>
+			<tr>
+			  <td>Currency:</td>
+			  <td>
+				<select id="currencyChoice">
+				  <option value="CAD">CAD</option>
+				  <option value="USD">USD</option>
+				</select>
+			  </td>
+			</tr>
+		  </table>
+		</td>
+		<td style = "vertical-align: top;">
+		  <!-- Right side -->
+		  <table id="rightSide" style="border: 1px solid black;">
+		  </table>
+		</td>
+	  </tr>
+	</table>
+	<button onclick="generate_document();">Generate</button>
+  </body>
+</html>
