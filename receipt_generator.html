@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta charset="UTF-8" />
 <html>
   <head>
 	<title>Receipt Generator</title>
@@ -65,9 +66,11 @@
 		  <!-- Right side -->
 		  <table id="rightSide" style="border: 1px solid black;">
 		  </table>
+		  <div style="padding: 5px 0px 5px 0px;"><button onclick="add_item();">Add Item</button></div>
+		  <div style="padding: 5px 0px 5px 0px;"><button onclick="add_shipping_handling();">Add Shipping & Handling</button></div>
+		  <div style="padding-top: 50px;"><button onclick="generate_document();" style="width: 200px; height: 50px;">Generate</button></div>
 		</td>
 	  </tr>
 	</table>
-	<button onclick="generate_document();">Generate</button>
   </body>
 </html>
