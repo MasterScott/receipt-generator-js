@@ -60,6 +60,14 @@ function add_items(n) {
 	}
 }
 
+function remove_item() {
+	var rightSide = document.getElementById("rightSide");
+
+	rightSide.removeChild(rightSide.children[rightSide.children.length - 1]);
+	
+	numItems--;
+}
+
 function add_shipping_handling() {
 	var rightSide = document.getElementById("rightSide");
 
