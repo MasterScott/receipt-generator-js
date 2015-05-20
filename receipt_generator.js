@@ -86,6 +86,7 @@ function add_shipping_handling() {
 	var rightSide = document.getElementById("rightSide");
 
 	var tr = document.createElement("tr");
+	tr.id = "shID";
 	var td = document.createElement("td");
 	tr.appendChild(td);
 	var td = document.createElement("td");
@@ -111,9 +112,22 @@ function add_shipping_handling() {
 	shPrice.size = "4";
 	td.appendChild(shPrice);
 	tr.appendChild(td);
+	var td = document.createElement("td");
+	var removeButton = document.createElement("button");
+	removeButton.setAttribute("onclick", "remove_shipping_handling();");
+	removeButton.innerHTML = "-";
+	td.appendChild(removeButton);
+	tr.appendChild(td);
 	rightSide.appendChild(tr);
 
 	shipping_handling_flag = true;
+}
+
+function remove_shipping_handling() {
+	var el = document.getElementById("shID");
+	var rightSide = document.getElementById("rightSide");
+	rightSide.removeChild(el);
+	shipping_handling_flag = false;
 }
 
 function generate_content() {
