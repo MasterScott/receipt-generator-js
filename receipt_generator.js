@@ -5,6 +5,8 @@ function add_item() {
 	var rightSide = document.getElementById("rightSide");
 
 	var tr = document.createElement("tr");
+	tr.className = "itemRow";
+	tr.id = "itemID" + itemNumber.toString();
 	var td = document.createElement("td");
 	var quantityText = document.createTextNode("Quantity:");
 	td.appendChild(quantityText);
@@ -51,7 +53,7 @@ function add_item() {
 	tr.appendChild(td);
 	var td = document.createElement("td");
 	var removeButton = document.createElement("button");
-	removeButton.setAttribute("onclick", "remove_item(" + itemNumber + ");");
+	removeButton.setAttribute("onclick", "remove_item(" + itemNumber.toString() + ");");
 	removeButton.innerHTML = "-";
 	td.appendChild(removeButton);
 	tr.appendChild(td);
@@ -70,12 +72,14 @@ function remove_last_item() {
 	var rightSide = document.getElementById("rightSide");
 
 	rightSide.removeChild(rightSide.children[rightSide.children.length - 1]);
+
+	itemNumber--;
 }
 
 function remove_item(n) {
+	var el = document.getElementById("itemID" + n);
 	var rightSide = document.getElementById("rightSide");
-
-	rightSide.removeChild(rightSide.children[n]);
+	rightSide.removeChild(el);
 }
 
 function add_shipping_handling() {
@@ -198,25 +202,27 @@ function generate_document() {
 
 	var totalPriceAll = 0;
 	var rightSide = document.getElementById("rightSide");
-	var elements = rightSide.getElementsByClassName("quantityInput")
+	var elements = rightSide.getElementsByClassName("itemRow");
 	for (var i = 0; i < elements.length; i++) {
-		var quantity = elements[i].value;
-		var part = rightSide.getElementsByClassName("partInput")[i].value;
-		var desc = rightSide.getElementsByClassName("descInput")[i].value;
-		var price = rightSide.getElementsByClassName("priceInput")[i].value;
-		var total = parseInt(quantity) * parseInt(price);
-		totalPriceAll += total;
-		docuHTML = docuHTML +
-			'<tr>' +
-			'<td>' + (i + 1).toString() + '</td>' +
-			'<td>' + quantity + '</td>' +
-			'<td>' + part + '</td>' +
-			'<td>' + desc + '</td>' +
-			'<td>$' + parseInt(price).toFixed(2).toString() + '</td>' +
-			'<td>$' + total.toFixed(2).toString() + '</td>' +
-			'</tr>';
+		var quantity = rightSide.getElementsByClassName("quantityInput")[i].value;
+		if (quantity) {
+			var part = document.getElementsByClassName("partInput")[i].value;
+			var desc = document.getElementsByClassName("descInput")[i].value;
+			var price = document.getElementsByClassName("priceInput")[i].value;
+			var total = parseInt(quantity) * parseInt(price);
+			totalPriceAll += total;
+			docuHTML = docuHTML +
+				'<tr>' +
+				'<td>' + (i + 1).toString() + '</td>' +
+				'<td>' + quantity + '</td>' +
+				'<td>' + part + '</td>' +
+				'<td>' + desc + '</td>' +
+				'<td>$' + parseInt(price).toFixed(2).toString() + '</td>' +
+				'<td>$' + total.toFixed(2).toString() + '</td>' +
+				'</tr>';
+		}
 	}
-	
+
 	docuHTML = docuHTML +
 		'<tr>' +
 		'<td>&nbsp;</td>' +
