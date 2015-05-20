@@ -1,4 +1,4 @@
-var numItems = 0;
+var itemNumber = 0;
 var shipping_handling_flag = false;
 
 function add_item() {
@@ -11,7 +11,7 @@ function add_item() {
 	tr.appendChild(td);
 	var td = document.createElement("td");
 	var quantityInput = document.createElement("input");
-	quantityInput.id = "quantityInput" + numItems.toString();
+	quantityInput.className = "quantityInput";
 	quantityInput.type = "text";
 	quantityInput.size = "4";
 	td.appendChild(quantityInput);
@@ -22,7 +22,7 @@ function add_item() {
 	tr.appendChild(td);
 	var td = document.createElement("td");
 	var partInput = document.createElement("input");
-	partInput.id = "partInput" + numItems.toString();
+	partInput.className = "partInput";
 	partInput.type = "text";
 	partInput.size = "15";
 	td.appendChild(partInput);
@@ -33,7 +33,7 @@ function add_item() {
 	tr.appendChild(td);
 	var td = document.createElement("td");
 	var descInput = document.createElement("input");
-	descInput.id = "descInput" + numItems.toString();
+	descInput.className = "descInput";
 	descInput.type = "text";
 	descInput.size = "40";
 	td.appendChild(descInput);
@@ -44,14 +44,20 @@ function add_item() {
 	tr.appendChild(td);
 	var td = document.createElement("td");
 	var priceInput = document.createElement("input");
-	priceInput.id = "priceInput" + numItems.toString();
+	priceInput.className = "priceInput";
 	priceInput.type = "text";
 	priceInput.size = "4";
 	td.appendChild(priceInput);
 	tr.appendChild(td);
+	var td = document.createElement("td");
+	var removeButton = document.createElement("button");
+	removeButton.setAttribute("onclick", "remove_item(" + itemNumber + ");");
+	removeButton.innerHTML = "-";
+	td.appendChild(removeButton);
+	tr.appendChild(td);
 	rightSide.appendChild(tr);
 
-	numItems++;
+	itemNumber++;
 }
 
 function add_items(n) {
@@ -60,12 +66,16 @@ function add_items(n) {
 	}
 }
 
-function remove_item() {
+function remove_last_item() {
 	var rightSide = document.getElementById("rightSide");
 
 	rightSide.removeChild(rightSide.children[rightSide.children.length - 1]);
-	
-	numItems--;
+}
+
+function remove_item(n) {
+	var rightSide = document.getElementById("rightSide");
+
+	rightSide.removeChild(rightSide.children[n]);
 }
 
 function add_shipping_handling() {
@@ -187,26 +197,26 @@ function generate_document() {
 		'</tr>';
 
 	var totalPriceAll = 0;
-	for (var i = 0; i < numItems; i++) {
-		if (document.getElementById("quantityInput" + i.toString()).value) {
-			var quantity = document.getElementById("quantityInput" + i.toString()).value;
-			var part = document.getElementById("partInput" + i.toString()).value;
-			var desc = document.getElementById("descInput" + i.toString()).value;
-			var price = document.getElementById("priceInput" + i.toString()).value;
-			var total = parseInt(quantity) * parseInt(price);
-			totalPriceAll += total;
-			docuHTML = docuHTML +
-				'<tr>' +
-				'<td>' + (i + 1).toString() + '</td>' +
-				'<td>' + quantity + '</td>' +
-				'<td>' + part + '</td>' +
-				'<td>' + desc + '</td>' +
-				'<td>$' + parseInt(price).toFixed(2).toString() + '</td>' +
-				'<td>$' + total.toFixed(2).toString() + '</td>' +
-				'</tr>';
-		}
+	var rightSide = document.getElementById("rightSide");
+	var elements = rightSide.getElementsByClassName("quantityInput")
+	for (var i = 0; i < elements.length; i++) {
+		var quantity = elements[i].value;
+		var part = rightSide.getElementsByClassName("partInput")[i].value;
+		var desc = rightSide.getElementsByClassName("descInput")[i].value;
+		var price = rightSide.getElementsByClassName("priceInput")[i].value;
+		var total = parseInt(quantity) * parseInt(price);
+		totalPriceAll += total;
+		docuHTML = docuHTML +
+			'<tr>' +
+			'<td>' + (i + 1).toString() + '</td>' +
+			'<td>' + quantity + '</td>' +
+			'<td>' + part + '</td>' +
+			'<td>' + desc + '</td>' +
+			'<td>$' + parseInt(price).toFixed(2).toString() + '</td>' +
+			'<td>$' + total.toFixed(2).toString() + '</td>' +
+			'</tr>';
 	}
-
+	
 	docuHTML = docuHTML +
 		'<tr>' +
 		'<td>&nbsp;</td>' +
